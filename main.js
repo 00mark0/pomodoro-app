@@ -5,6 +5,8 @@ const applyButton = document.getElementById('apply');
 let timer = document.getElementById('timer');
 let countdown;
 let remainingTime = 0;
+let isPaused = false;
+let isCounting = false;
 
 let workTimeInput = document.getElementById('work-time');
 let breakTimeInput = document.getElementById('break-time');
@@ -33,8 +35,9 @@ document.body.appendChild(phaseDisplay);
 phaseDisplay.style.display = 'block';
 let notificationSound = new Audio('notif/mixkit-clear-announce-tones-2861.wav');
 
-function startTimer(duration, message) {
-  let timeLeft = duration * 60;
+function startTimer(durationInSeconds, message) {
+  let timeLeft = durationInSeconds;
+  isCounting = true;
   countdown = setInterval(function () {
     timeLeft--;
     remainingTime = timeLeft;
@@ -43,6 +46,7 @@ function startTimer(duration, message) {
     timer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     if (timeLeft === 0) {
       clearInterval(countdown);
+      isCounting = false;
       notificationSound.play('notif/mixkit-clear-announce-tones-2861.wav');
       alert(message);
       if (phase === 'Work') {
@@ -62,23 +66,28 @@ function startTimer(duration, message) {
 }
 
 startButton.addEventListener('click', function () {
-  if (phase === 'Work') {
-    startTimer(workTime, 'Work phase done, time for a break!');
-  } else if (phase === 'Break') {
-    startTimer(breakTime, 'Break phase done, time for work!');
-  } else {
-    startTimer(longBreakTime, 'Long break phase done, time for work!');
+  if (!isCounting) {
+    if (isPaused) {
+      startTimer(remainingTime, 'Resuming...');
+      isPaused = false;
+    } else {
+      if (phase === 'Work') {
+        startTimer(workTime * 60, 'Work phase done, time for a break!');
+      } else if (phase === 'Break') {
+        startTimer(breakTime * 60, 'Break phase done, time for work!');
+      } else {
+        startTimer(longBreakTime * 60, 'Long break phase done, time for work!');
+      }
+    }
+    phaseDisplay.textContent = `Current phase: ${phase}`;
   }
-  phaseDisplay.textContent = `Current phase: ${phase}`;
 });
 
 pauseButton.addEventListener('click', function () {
-  if (pauseButton.textContent === 'Pause') {
+  if (!isPaused) {
     clearInterval(countdown);
-    pauseButton.textContent = 'Resume';
-  } else {
-    startTimer(Math.round(remainingTime / 60), 'Resuming...');
-    pauseButton.textContent = 'Pause';
+    isPaused = true;
+    isCounting = false;
   }
 });
 
@@ -89,4 +98,6 @@ resetButton.addEventListener('click', function () {
   intervalCount = 0;
   phaseDisplay.textContent = `Current phase: ${phase}`;
   pauseButton.textContent = 'Pause';
+  isCounting = false;
+  isPaused = false;
 });
