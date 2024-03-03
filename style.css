@@ -1,0 +1,169 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Comfortaa', sans-serif;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #000000;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 50%;
+  height: 60vh;
+  margin: 100px auto;
+  padding: 20px;
+  background-image: url('img/pomodor-background.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  overflow: auto;
+  flex-wrap: wrap;
+}
+
+.timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.buttons button {
+  font-family: 'Comfortaa', sans-serif;
+  color: #ffffff;
+  background-color: #ff6347;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+}
+
+.buttons button:hover {
+  background-color: #e53020;
+}
+
+.settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.settings input {
+  padding: 5px;
+  border-radius: 5px;
+  border: none;
+  text-align: start;
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 16px;
+}
+
+.settings label {
+  font-size: 20px;
+  font-weight: 900;
+  background-color: #ff6347;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.settings button {
+  font-family: 'Comfortaa', sans-serif;
+  color: #ffffff;
+  background-color: #ff6347;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+}
+
+.settings button:hover {
+  background-color: #e53020;
+}
+
+.timer,
+.button,
+.settings {
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 80%;
+    height: auto;
+  }
+
+  .timer,
+  .buttons,
+  .settings {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .container {
+    width: 70%;
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    width: 80%;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+    height: auto;
+  }
+
+  .timer,
+  .buttons,
+  .settings {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    width: 100%;
+    padding: 10px;
+  }
+}
