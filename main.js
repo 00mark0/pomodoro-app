@@ -36,19 +36,24 @@ phaseDisplay.style.display = 'block';
 let notificationSound = new Audio('notif/mixkit-clear-announce-tones-2861.wav');
 
 function startTimer(durationInSeconds, message) {
-  let timeLeft = durationInSeconds;
+  // Request permission to send notifications
+  Notification.requestPermission();
+
+  const endTime = Date.now() + durationInSeconds * 1000;
   isCounting = true;
   countdown = setInterval(function () {
-    timeLeft--;
+    const timeLeft = Math.round((endTime - Date.now()) / 1000);
     remainingTime = timeLeft;
     let minutes = Math.floor(timeLeft / 60);
     let seconds = timeLeft % 60;
     timer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    if (timeLeft === 0) {
+    if (timeLeft <= 0) {
       clearInterval(countdown);
       isCounting = false;
-      notificationSound.play('notif/mixkit-clear-announce-tones-2861.wav');
-      alert(message);
+      // Send a notification when the timer finishes
+      new Notification(message);
+      // Play a sound when the timer finishes
+      notificationSound.play();
       if (phase === 'Work') {
         intervalCount++;
         if (intervalCount === longBreakInterval) {
@@ -72,11 +77,14 @@ startButton.addEventListener('click', function () {
       isPaused = false;
     } else {
       if (phase === 'Work') {
-        startTimer(workTime * 60, 'Work phase done, time for a break!');
+        remainingTime = workTime * 60;
+        startTimer(remainingTime, 'Work phase done, time for a break!');
       } else if (phase === 'Break') {
-        startTimer(breakTime * 60, 'Break phase done, time for work!');
+        remainingTime = breakTime * 60;
+        startTimer(remainingTime, 'Break phase done, time for work!');
       } else {
-        startTimer(longBreakTime * 60, 'Long break phase done, time for work!');
+        remainingTime = longBreakTime * 60;
+        startTimer(remainingTime, 'Long break phase done, time for work!');
       }
     }
     phaseDisplay.textContent = `Current phase: ${phase}`;
